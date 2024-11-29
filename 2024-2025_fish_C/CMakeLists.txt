@@ -14,9 +14,11 @@ include_directories (
 )
 
 add_executable(2024_2025_fish_C main.c fish.c fish.h
-        "Neal Snooke Code.c"
-        Menus.c
-        Feeder.c)
+        "nealSnookeCode.c"
+        menu.c
+        Feeder.c
+        time.c
+)
 
 target_link_libraries(2024_2025_fish_C)
 

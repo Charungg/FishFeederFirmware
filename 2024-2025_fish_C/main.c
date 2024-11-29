@@ -23,17 +23,9 @@
 void userProcessing() {
     char * title = "ArduFEED";
     introduction();
-    // runningStartMenu(title);
-    test();
+    runningStartMenu(title);
 
     logAdd(METHOD_ENTRY, "userProcessing() done");
-}
-
-void test()
-{
-    char* result;
-
-    manualFeeder(result);
 }
 
 /**

@@ -1,0 +1,11 @@
+At first I read all of the code and try to understand how they all work.
+A lot of the code which interacts with the JavaFX contains codes I don't understand but the comment helps understands how to use them.
+I decided to break down the original code in main.c into multiple functions then into their own .c files for example functions that contains
+the menus functionality and responsible for menu GUI was placed in menu.c whereas manualFeeder was placed in feeder.c.
+
+I looked at the code for displayClear() and displayText which is what I will be using to produce a GUI on the hardware.
+I kept running into a problem where I displayClear() the screen and it will fill the whole screen a completely different colour.
+Turns out when clearing the screen it will make the background colour of what displayColour() background colour is.
+
+After creating the start, main and feeder menus I decided to go towards set up the time of
+

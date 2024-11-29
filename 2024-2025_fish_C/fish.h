@@ -89,75 +89,51 @@ void logRemoveInfo(int level);
 
 
 // My Code
-void test();
-
-
 // Start Menu Functions
 void introduction(void);
 void displayStartMenu(char* title);
-
-// void displayTitle(char* title);
-// void displayNextFeedTime();
-// void displayNumberOfFeeds();
 void displayTime(int second);
-
 void runningStartMenu(char* title);
 void updateTime(int seconds);
-// when short is pressed enter main menu running
-// long press to exit program.
-
 
 
 // Main menu functions
 void displayMainMenu();
-
-void displayFeederMenu();
-
-
 void runningMainMenu();
-// TO-DO
-// Each having their own menu;
-// void runningSetUpTime();
-// void runningSetUpSchedule;
 int navigateMainMenu(int currentOption);
 int runMainMenuOption(int currentOption, char* result);
+
+void displayExit(int isSelected, int yAxis);
 
 
 // Feeder menu functions
 void displayFeederMenu();
-
 void runningFeederMenu(char *result);
 int navigateFeederMenu(int currentOption);
 int runFeederMenuOption(int currentOption);
-
 
 
 // Feeder Functions
 void manualFeeder(char *result);
 
 
-// Temporary code
-// void manualFeeder(char* result);
-//
-// void displayNavMenu(char* title);
-// void runningNavigationMenu(int currentOption);
-// void updateNavMenu();
 
-// Structs
+// time function
+typedef struct time {
+ int day;
+ int month;
+ int year;
+ int hour;
+ int minute;
+ int second;
+}systemTime;
 
-// #ifndef FISH_H
-// #define FISH_H
-//
-// struct nodeText
-// {
-//  int xAxis;
-//  int yAxis;
-//  char* text;
-//  int size;
-// };
-//
-// typedef struct nodeText NodeText;
-//
-// void setUpNodeText(NodeText *NodeText,int xAxis, int yAxis, char* text, int size);
-//
-// #endif
+void displaySetupTime(systemTime time);
+void runningSetupTime(char* result);
+
+void displaySystemTime(systemTime time);
+void displaySystemDate(systemTime time);
+
+void displayConfirm(int isSelected);
+systemTime getSystemTime();
+
