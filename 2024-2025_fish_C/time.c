@@ -19,36 +19,47 @@
 
 #define LINE_SIZE 80
 
+void test();
+
 void displaySetupTime(systemTime time) {
     displayColour("white", "black");
     displayClear();
 
-    displaySystemTime(time);
-    displaySystemDate(time);
+    // displaySystemTime(time);
+    // displaySystemDate(time);
 
     displayConfirm(0);
     displayExit(0,7);
 }
 
+//
+// void displaySystemDate(systemTime time) {
+//     char text[LINE_SIZE];
+//     char* dateFormat = "Date |%02d:%02d:%04d";
+//     displayColour("white", "grey");
+//
+//     snprintf(text, LINE_SIZE, dateFormat, time.day, time.month, time.year);
+//     displayText(CHAR_WIDTH*2,CHAR_HEIGHT*2,text,1);
+// }
+//
+// void displaySystemTime(systemTime time) {
+//     char text[LINE_SIZE];
+//     char* timeFormat = "Time |%02d:%02d:%02d";
+//     displayColour("white", "grey");
+//
+//     snprintf(text, LINE_SIZE, timeFormat, time.hour, time.minute, time.second);
+//     displayText(CHAR_WIDTH*2,CHAR_HEIGHT*4,text,1);
+// }
 
-void displaySystemDate(systemTime time) {
-    char text[LINE_SIZE];
-    char* dateFormat = "Date |%02d:%02d:%04d";
-    displayColour("white", "grey");
-
-    snprintf(text, LINE_SIZE, dateFormat, time.day, time.month, time.year);
-    displayText(CHAR_WIDTH*2,CHAR_HEIGHT*2,text,1);
-}
-
-void displaySystemTime(systemTime time) {
-    char text[LINE_SIZE];
-    char* timeFormat = "Time |%02d:%02d:%02d";
-    displayColour("white", "grey");
-
-    snprintf(text, LINE_SIZE, timeFormat, time.hour, time.minute, time.second);
-    displayText(CHAR_WIDTH*2,CHAR_HEIGHT*4,text,1);
-}
-
+// void displayDay(systemTime time, int isSelected){
+//     char text[LINE_SIZE];
+//     char dayFormat[] = "%02d";
+//     isOptionSelected(isSelected);
+//
+//     snprintf(text, LINE_SIZE, dayFormat, time.day);
+//     displayText(0,0,text,1);
+//
+// }
 
 systemTime getSystemTime() {
     systemTime time;
@@ -69,13 +80,14 @@ void runningSetupTime(char* result) {
     printf("Short press to navigate, long press to change value\n");
     systemTime time = getSystemTime();
     displaySetupTime(time);
+    test();
+    // displayDay(time,0);
 
     do {
         msleep(500L);
         result = buttonState(); // get the button state from the JavaFX application
 
         if (strcmp(result, "LONG_PRESS") == 0) {
-
             free(result);
         }
 
@@ -89,21 +101,36 @@ void runningSetupTime(char* result) {
 
 
 void displayConfirm(int isSelected) {
-    if (isSelected) {
-        displayColour("black", "white");
-    }
-    else {
-        displayColour("white", "black");
-    }
+    isOptionSelected(isSelected);
 
     displayText(CHAR_WIDTH*14,CHAR_HEIGHT*7,"Confirm",1);
 }
 
+void isOptionSelected(int select){
+    if (select){
+        displayColour("black", "white");
+    }
+
+    else{
+        displayColour("white", "black");
+    }
+}
+
+void isTimeSelected(int select){
+    if (select){
+        displayColour("grey", "white");
+    }
+    else{
+        displayColour("white", "grey");
+    }
+}
 
 
-// int navigateSetupTime(int currentOption) {
-//     switch(currentOption) {
-//         case ()
-// }
+void test(){
+    for (int i = 2; i<= SCREEN_WIDTH; i+=2){
+        displayColour("black", "white");
+        displayText(CHAR_WIDTH*i,CHAR_HEIGHT*2,"Test",1);
+    }
+}
 
 

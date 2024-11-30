@@ -137,3 +137,6 @@ void displaySystemDate(systemTime time);
 void displayConfirm(int isSelected);
 systemTime getSystemTime();
 
+void isOptionSelected(int select);
+void isTimeSelected(int select);
+
