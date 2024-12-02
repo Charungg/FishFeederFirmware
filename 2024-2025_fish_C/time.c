@@ -19,8 +19,6 @@
 
 #define LINE_SIZE 80
 
-void test();
-
 void displaySetupTime(systemTime time) {
     displayColour("white", "black");
     displayClear();
@@ -256,6 +254,7 @@ int selectDateTimeOption(int currentOption, systemTime* time){
             msleep(250);
             displaySave(1);
             clockSet(time -> second, time -> minute, time -> hour, time -> day, time -> month, time -> year);
+            saveSystemTime(*time);
             break;
     }
 
@@ -268,7 +267,6 @@ void displaySelected(){
 }
 
 void selectDateTime(void (*incrementFunction)(systemTime*, int), systemTime* time){
-    char text[LINE_SIZE];
     char* result;
     int running_select_date_time = 1;
 

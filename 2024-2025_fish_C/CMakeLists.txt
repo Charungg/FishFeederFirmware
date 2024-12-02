@@ -19,6 +19,8 @@ add_executable(2024_2025_fish_C main.c
         Feeder.c
         time.c
         fish.c
+        file.c
+        scheduleTime.c
 )
 
 target_link_libraries(2024_2025_fish_C)

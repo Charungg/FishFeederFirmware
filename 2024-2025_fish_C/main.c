@@ -65,11 +65,13 @@ void introduction(void){
 
     // display an information message on the GUI debug log display area (see fish.h)
     infoMessage("Welcome to the fish feeder test program");
+    loadSystemTime();
 
-    // set the real time clock to 13:00:00 on the 25th May 1968
-    clockSet(0, 0, 14, 25, 05, 1968); // set the time to 12:30:00
-    printf("Clock thinks the year is %d\n", clockYear());
-    printf("Clock thinks the day is %d\n", clockDayOfWeek());
+    // // set the real time clock to 13:00:00 on the 25th May 1968
+    // clockSet(0, 30, 12, 15, 06, 2000); // set the time to 12:30:00
+    printf("Clock thinks the date is %d/%d/%d\n", clockDay(), clockMonth(), clockYear());
+    printf("Clock thinks the time is %d/%d/%d\n", clockHour(), clockMinute(), clockSecond());
+    printf("Clock thinks today is %d\n", clockDayOfWeek());
     printf("Clock %d:%d:%d %d/%d/%d\n", clockHour(), clockMinute(), clockSecond(),  clockYear(), clockMonth(), clockDay());
 
 

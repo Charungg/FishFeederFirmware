@@ -166,3 +166,11 @@ void incrementMinute(systemTime* time, int isSelected);
 void incrementSecond(systemTime* time, int isSelected);
 
 void displaySelected();
+
+// file functions
+void saveSystemTime(systemTime time);
+void loadSystemTime();
+void setSystemDateAndTime(char* text);
+void splitDateTimeString(char* timeString, char* delimiter, int* dateTimeArray, int* currentFreeIndex);
+void removeZerosPadding(char* value);
+void loadSetClock(int* dateTimeArray);

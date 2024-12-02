@@ -13,11 +13,11 @@ void manualFeeder(char* result)
         free(result);
         result = buttonState(); // get the button state from the JavaFX application
 
-        if (strcmp(result, "SHORT_PRESS") == 0){
+        if (isShortPressed(result)){
             waiting_feed_menu = 0;
         }
 
-        if (strcmp(result, "LONG_PRESS") == 0){
+        if (isLongPressed(result)){
             // step the motor through a complete rotation (360 degrees)
             for (int i = 0; i < 180; i++) {
                 motorStep(); // step the motor in the JavaFX application
