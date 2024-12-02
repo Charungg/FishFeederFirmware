@@ -35,6 +35,7 @@ void displayTime(int second)
 void runningStartMenu(char* title){
     int running_start_menu = 1; // continue flag
     int prev_sec = 0; // allow detection when seconds value has changed
+    int AFKTimer = 0;
 
     displayStartMenu(title);
     printf("Short press to enter main menu, Long press the button to quit\n");
@@ -45,19 +46,27 @@ void runningStartMenu(char* title){
         if (second != prev_sec) {
             prev_sec = second;
             displayTime(second);
+            AFKTimer++;
         }
         // check for the button state every half second
         msleep(500L);
         char *result = buttonState(); // get the button state from the JavaFX application
+
+        // Blanks the display after 1 minute of the button no being pressed
+        if (AFKTimer > 60){
+            blankDisplay(result);
+            AFKTimer = 0;
+            displayStartMenu(title);
+        }
 
         if (strcmp(result, "LONG_PRESS") == 0) {
             running_start_menu = 0;
         }
 
         // check the result and quit this look if the button is short pressed
-        else if (strcmp(result, "SHORT_PRESS") == 0)
-        {
+        else if (strcmp(result, "SHORT_PRESS") == 0){
             logAdd(GENERAL, "main menu");
+            AFKTimer = clockSecond();
 
             displayMainMenu();
             runningMainMenu();
@@ -69,6 +78,19 @@ void runningStartMenu(char* title){
 }
 
 
+void blankDisplay(char* result){
+    int running_blank_display = 1;
+    displayColour("white", "grey");
+    displayClear();
+
+    do{
+        msleep(500L);
+        result = buttonState();
+        if (isShortPressed(result) || isLongPressed(result)){
+            running_blank_display = 0;
+        }
+    }while(running_blank_display);
+}
 
 
 
@@ -161,7 +183,6 @@ int runMainMenuOption(int currentOption, char* result)
         case 0:
         displayFeederMenu();
         runningFeederMenu(result);
-
             break;
 
         case 1:
@@ -172,7 +193,7 @@ int runMainMenuOption(int currentOption, char* result)
             printf("Setup Schedule Time Running\n");
             break;
 
-        case 3:
+        default:
             return 0;
     }
 
@@ -234,6 +255,7 @@ void runningFeederMenu(char *result){
 }
 
 
+
 int navigateFeederMenu(int currentOption){
     displayColour("white","black");
     switch(currentOption)
@@ -266,7 +288,11 @@ int navigateFeederMenu(int currentOption){
         displayColour("black","white");
         displayText(0, CHAR_HEIGHT*0, "Feed Now", 1);
         break;
+
+        default:
+            exit(1);
     }
+
     return ((currentOption+1)%5);
 }
 

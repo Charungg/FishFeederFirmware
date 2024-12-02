@@ -497,7 +497,7 @@ jobjectArray build_args(char *format, ...) {
                 jstrs = (*env_c)->NewStringUTF(env_c, str);
                 break;
             case 'l':
-                sprintf(str, "%ld", va_arg(args, long));
+                sprintf(str, "%lld", va_arg(args, long long)); //nns updated 29/11/2024 change to long long (for Windows)
                 //fprintf(stdout, "string arg[%d]: %s\n", count, str);
                 jstrs = (*env_c)->NewStringUTF(env_c, str);
                 break;
@@ -637,12 +637,13 @@ char *buttonState() {
  * convert string to long, checking for invalid numbers
  * @return
  */
-long convertStringToLong(char *str) {
+long long convertStringToLongLong(char *str) {
     char *end;
-    long result = strtol(str, &end, 10);
+
+    long long result = strtoll(str, &end, 10); // fix nns 29/11/2024 change to long long type
 
     if (*end != '\0') {
-        logAdd(JNI_MESSAGES, "convertStringToLong() invalid number");
+        logAdd(JNI_MESSAGES, "convertStringToLongLong() invalid number");
         result = -1;
     }
 
@@ -656,15 +657,18 @@ long convertStringToLong(char *str) {
  *   ie the clock only needs to be set once, even if the system is not used for months.
  * If the value 0 is provided the current offset is returned.
  * Calling the function at any time in the future with that same offset will cause the emulator clock
- * to be behave as though it had been running continuously.
+ * to to be behave as though it had been running continuously.
  * e.g if it was an hour slow, setting that same warm start value obtained at another time
  * will mean it is still an hour slow relative to the current real time.
  * @param offset - a value obtained previously by this function for a clock.
  * @return
  */
-long clockWarmStart(long offset) {
+long long clockWarmStart(long long offset) {
     char *resultstr =  call_j_message(build_args("sl", "RTC_WARM_START", offset)); // 1st argument is format specifier();
-    long result = convertStringToLong(resultstr);
+
+    printf("raw time offset: %s\n", resultstr);
+
+    long long result = convertStringToLongLong(resultstr);
     free(resultstr);
     return result;
 }
@@ -676,7 +680,7 @@ long clockWarmStart(long offset) {
  */
 int clockitem(char *item) {
     char *resultstr =  call_j_message(build_args("s", item)); // 1st argument is format specifier();
-    int result = (int)convertStringToLong(resultstr);
+    int result = (int)convertStringToLongLong(resultstr);
     free(resultstr);
     return result;
 }
@@ -698,7 +702,7 @@ int clockDay() {
 }
 
 int clockMonth() {
-    return clockitem("RTC_MONTH");
+    return clockitem("RTC_MONTH")+1; // fix nns 29/11/2024 java starts months at 0=January
 }
 
 int clockYear() {

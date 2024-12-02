@@ -35,7 +35,7 @@ int clockDayOfWeek(); // Sunday = 0, Monday = 1, etc
 // when given 0. restore the clock by calling the function with the previously saved value.
 // the clock will have continued to keep time.
 // note the result value will not change unless the clock is set to a different time with clockSet()
-long clockWarmStart(long offset);
+long long clockWarmStart(long long offset); // fix nns 29/11/2024 change to long long type
 
 // mechanical feeder functions
 void motorStep(); // rotates the feeder container one step (1 degree)
@@ -87,7 +87,6 @@ void logAddInfo(int level);
 void logRemoveInfo(int level);
 
 
-
 // My Code
 // Start Menu Functions
 void introduction(void);
@@ -95,6 +94,8 @@ void displayStartMenu(char* title);
 void displayTime(int second);
 void runningStartMenu(char* title);
 void updateTime(int seconds);
+
+void blankDisplay(char* result);
 
 
 // Main menu functions
@@ -104,6 +105,9 @@ int navigateMainMenu(int currentOption);
 int runMainMenuOption(int currentOption, char* result);
 
 void displayExit(int isSelected, int yAxis);
+
+int isLongPressed(char* result);
+int isShortPressed(char* result);
 
 
 // Feeder menu functions
@@ -131,12 +135,34 @@ typedef struct time {
 void displaySetupTime(systemTime time);
 void runningSetupTime(char* result);
 
-void displaySystemTime(systemTime time);
-void displaySystemDate(systemTime time);
+void displaySystemDateAndTime(systemTime time);
+void displaySystemDateAndTimeFormat(char* text);
+void displayTimeDate(char* format, int time, int isSelected, int width, int height);
 
-void displayConfirm(int isSelected);
+void displayDay(char* dayFormat, systemTime time, int isSelected);
+void displayMonth(char* dayFormat, systemTime time, int isSelected);
+void displayYear(char* dayFormat, systemTime time, int isSelected);
+
+void displayHour(char* format, systemTime time, int isSelected);
+void displayMinute(char* format, systemTime time, int isSelected);
+void displaySecond(char* format, systemTime time, int isSelected);
+
+void displaySave(int isSelected);
 systemTime getSystemTime();
 
 void isOptionSelected(int select);
 void isTimeSelected(int select);
 
+int navigateSetupTime(int currentOption, systemTime time);
+
+int selectDateTimeOption(int currentOption, systemTime* time);
+void selectDateTime(void (*incrementFunction)(systemTime*, int), systemTime*);
+
+void incrementDay(systemTime* time, int isSelected);
+void incrementMonth(systemTime* time, int isSelected);
+void incrementYear(systemTime* time, int isSelected);
+void incrementHour(systemTime* time, int isSelected);
+void incrementMinute(systemTime* time, int isSelected);
+void incrementSecond(systemTime* time, int isSelected);
+
+void displaySelected();
