@@ -1,0 +1,3 @@
+C:/Users/Charlie Cheung/Downloads/FishFeederFirmware-3-12-2024/FishFeederFirmware-main/2024-2025_fish_C/cmake-build-debug/CMakeFiles/2024_2025_fish_C.dir
+C:/Users/Charlie Cheung/Downloads/FishFeederFirmware-3-12-2024/FishFeederFirmware-main/2024-2025_fish_C/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Charlie Cheung/Downloads/FishFeederFirmware-3-12-2024/FishFeederFirmware-main/2024-2025_fish_C/cmake-build-debug/CMakeFiles/rebuild_cache.dir

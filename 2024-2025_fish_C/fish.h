@@ -87,90 +87,19 @@ void logAddInfo(int level);
 void logRemoveInfo(int level);
 
 
-// My Code
-// Start Menu Functions
-void introduction(void);
-void displayStartMenu(char* title);
-void displayTime(int second);
-void runningStartMenu(char* title);
-void updateTime(int seconds);
-
-void blankDisplay(char* result);
-
-
-// Main menu functions
-void displayMainMenu();
-void runningMainMenu();
-int navigateMainMenu(int currentOption);
-int runMainMenuOption(int currentOption, char* result);
-
-void displayExit(int isSelected, int yAxis);
-
-int isLongPressed(char* result);
-int isShortPressed(char* result);
-
-
-// Feeder menu functions
-void displayFeederMenu();
-void runningFeederMenu(char *result);
-int navigateFeederMenu(int currentOption);
-int runFeederMenuOption(int currentOption);
-
-
-// Feeder Functions
-void manualFeeder(char *result);
 
 
 
-// time function
-typedef struct time {
- int day;
- int month;
- int year;
- int hour;
- int minute;
- int second;
-}systemTime;
 
-void displaySetupTime(systemTime time);
-void runningSetupTime(char* result);
 
-void displaySystemDateAndTime(systemTime time);
-void displaySystemDateAndTimeFormat(char* text);
-void displayTimeDate(char* format, int time, int isSelected, int width, int height);
 
-void displayDay(char* dayFormat, systemTime time, int isSelected);
-void displayMonth(char* dayFormat, systemTime time, int isSelected);
-void displayYear(char* dayFormat, systemTime time, int isSelected);
 
-void displayHour(char* format, systemTime time, int isSelected);
-void displayMinute(char* format, systemTime time, int isSelected);
-void displaySecond(char* format, systemTime time, int isSelected);
 
-void displaySave(int isSelected);
-systemTime getSystemTime();
 
-void isOptionSelected(int select);
-void isTimeSelected(int select);
 
-int navigateSetupTime(int currentOption, systemTime time);
 
-int selectDateTimeOption(int currentOption, systemTime* time);
-void selectDateTime(void (*incrementFunction)(systemTime*, int), systemTime*);
 
-void incrementDay(systemTime* time, int isSelected);
-void incrementMonth(systemTime* time, int isSelected);
-void incrementYear(systemTime* time, int isSelected);
-void incrementHour(systemTime* time, int isSelected);
-void incrementMinute(systemTime* time, int isSelected);
-void incrementSecond(systemTime* time, int isSelected);
 
-void displaySelected();
 
-// file functions
-void saveSystemTime(systemTime time);
-void loadSystemTime();
-void setSystemDateAndTime(char* text);
-void splitDateTimeString(char* timeString, char* delimiter, int* dateTimeArray, int* currentFreeIndex);
-void removeZerosPadding(char* value);
-void loadSetClock(int* dateTimeArray);
+
+

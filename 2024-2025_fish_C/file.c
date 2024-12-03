@@ -1,14 +1,15 @@
-//
-// Created by charl on 02/12/2024.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "fish.h"
+#include "time.h"
+#include "file.h"
 
-void saveSystemTime(systemTime time) {
+
+#define LINE_SIZE 80
+
+void saveSystemDateTime(systemDateTime time) {
     char* text;
 
     FILE* filePtr;
@@ -27,8 +28,8 @@ void saveSystemTime(systemTime time) {
     fclose(filePtr);
 }
 
-void loadSystemTime() {
-    char lineText[100];
+void loadSystemDateTime() {
+    char lineText[LINE_SIZE];
 
     FILE *filePtr;
     filePtr = fopen("../systemTime.txt", "r");
@@ -42,15 +43,13 @@ void loadSystemTime() {
 
     else if (strcmp(lineText, "systemTime:\n") == 0) {
         fgets(lineText, sizeof(lineText), filePtr);
-        setSystemDateAndTime(lineText);
+        readSystemDateTime(lineText);
     }
 
-
-    printf("-------------------------\n");
     fclose(filePtr);
 }
 
-void setSystemDateAndTime(char* lineText) {
+void readSystemDateTime(char* lineText) {
     char* dateString;
     char* timeString;
 
@@ -70,7 +69,7 @@ void setSystemDateAndTime(char* lineText) {
     splitDateTimeString(dateString, "/", dateTimeArray, &currentFreeIndex);
     splitDateTimeString(timeString, ":", dateTimeArray, &currentFreeIndex);
 
-    loadSetClock(dateTimeArray);
+    loadClock(dateTimeArray);
 }
 
 void splitDateTimeString(char* dateTimeString, char* delimiter, int* dateTimeArray, int* currentFreeIndex) {
@@ -83,7 +82,6 @@ void splitDateTimeString(char* dateTimeString, char* delimiter, int* dateTimeArr
     do {
         // Removes any zeros padding if their any.
         removeZerosPadding(text);
-        printf("Value: %s\n", text);
 
         // Adds the specific date or time value to array
         dateTimeArray[*currentFreeIndex] = atoi(text);
@@ -103,15 +101,13 @@ void removeZerosPadding(char* value){
     //Checks through all the element of date or time string by iterating through to find a char that is not
     //a zero and ensures the zero found is not the null-terminated string literal.
     if((n = strspn(value, "0")) != 0 && (value[n] != '\0')) {
-        printf("Value after removing padding: %s\n", &value[n]);
 
         //Copies the part of the date or time substring that does not contain the 0 padding by
         //Overwriting the original string pointer.
         strcpy(value, &value[n]);
-        printf("Pointer dereferenced to new value: %s\n", value);
     }
 }
 
-void loadSetClock(int* dateTimeArray) {
+void loadClock(int* dateTimeArray) {
     clockSet(dateTimeArray[3], dateTimeArray[4], dateTimeArray[3], dateTimeArray[0], dateTimeArray[1], dateTimeArray[2]);
 }

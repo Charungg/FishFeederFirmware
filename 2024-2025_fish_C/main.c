@@ -4,7 +4,10 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "fish.h"
+#include "menu.h"
+#include "file.h"
 
 #define CHAR_WIDTH 6
 #define CHAR_HEIGHT 8
@@ -65,7 +68,7 @@ void introduction(void){
 
     // display an information message on the GUI debug log display area (see fish.h)
     infoMessage("Welcome to the fish feeder test program");
-    loadSystemTime();
+    loadSystemDateTime();
 
     // // set the real time clock to 13:00:00 on the 25th May 1968
     // clockSet(0, 30, 12, 15, 06, 2000); // set the time to 12:30:00
