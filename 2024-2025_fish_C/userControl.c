@@ -2,11 +2,11 @@
 #include "userControl.h"
 
 
-int isLongPressed(char* result){
+int isLongPressed(const char* result){
     return (strcmp(result, "LONG_PRESS") == 0);
 }
 
-int isShortPressed(char* result){
+int isShortPressed(const char* result){
     return (strcmp(result, "SHORT_PRESS") == 0);
 }
 

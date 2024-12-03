@@ -3,15 +3,11 @@
 #include <string.h>
 
 #include "fish.h"
-#include "time.h"
 #include "file.h"
-
 
 #define LINE_SIZE 80
 
 void saveSystemDateTime(systemDateTime time) {
-    char* text;
-
     FILE* filePtr;
     filePtr = fopen("../systemTime.txt","w");
 
@@ -20,6 +16,7 @@ void saveSystemDateTime(systemDateTime time) {
     }
 
     else {
+        char* text;
         text = "systemTime:";
         fprintf(filePtr, "%s\n", text);
         fprintf(filePtr, "%02d/%02d/%04d %2d:%02d:%02d\n", time.day, time.month, time.year, time.hour, time.minute, time.second);
@@ -72,7 +69,7 @@ void readSystemDateTime(char* lineText) {
     loadClock(dateTimeArray);
 }
 
-void splitDateTimeString(char* dateTimeString, char* delimiter, int* dateTimeArray, int* currentFreeIndex) {
+void splitDateTimeString(char* dateTimeString, const char* delimiter, int* dateTimeArray, int* currentFreeIndex) {
     char* text;
 
     // Gets the first string part before the delimiter.
@@ -108,6 +105,6 @@ void removeZerosPadding(char* value){
     }
 }
 
-void loadClock(int* dateTimeArray) {
-    clockSet(dateTimeArray[3], dateTimeArray[4], dateTimeArray[3], dateTimeArray[0], dateTimeArray[1], dateTimeArray[2]);
+void loadClock(const int* dateTimeArray) {
+    clockSet(dateTimeArray[5], dateTimeArray[4], dateTimeArray[3], dateTimeArray[0], dateTimeArray[1], dateTimeArray[2]);
 }

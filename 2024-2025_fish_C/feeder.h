@@ -6,5 +6,5 @@ void displayFeederMenu();
 int runFeederMenuOption(int currentOption);
 int navigateFeederMenu(int currentOption);
 
-void manualFeeder(char *result);
+void feedNow();
 #endif // FEEDER_H

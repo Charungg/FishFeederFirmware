@@ -3,6 +3,7 @@
 
 #include "fish.h"
 #include "menu.h"
+#include "setUpTime.h"
 #include "userControl.h"
 #include "feeder.h"
 
@@ -14,16 +15,10 @@
 
 #define LINE_SIZE 80
 
-// Global variable to keep track of how long is the user inactive.
-// AFK = away from keyboard
-int AFKTimer = 0;
-
-// allow detection when seconds value has changed
-int prev_sec = 0;
-
-
 void runningStartMenu(char* title){
     int running_start_menu = 1; // continue flag
+    int AFKTimer = 0;
+    int prev_second = clockSecond();
 
     displayStartMenu(title);
     printf("Short press to enter main menu, Long press the button to quit\n");
@@ -33,29 +28,25 @@ void runningStartMenu(char* title){
         msleep(500L);
         char *result = buttonState(); // get the button state from the JavaFX application
 
-        // Update time on display
-        displayUpdatedTime();
-
         // Blanks the display after 1 minute of the button no being pressed
-        if(isUserAFK(result)){
-            displayStartMenu(title);
+        if(isTimeUpdated(&prev_second)){
+            if(isUserAFK(&AFKTimer)) {
+                displayStartMenu(title);
+            }
+            displayClockTime();
         }
 
-        else if (isLongPressed(result)) {
+        if (isLongPressed(result)) {
             running_start_menu = 0;
         }
 
         // check the result and quit this look if the button is short pressed
-        else if (isShortPressed(result)){
+        if (isShortPressed(result)){
             logAdd(GENERAL, "main menu");
-            AFKTimer = clockSecond();
-
-            displayMainMenu();
             runningMainMenu();
             displayStartMenu(title);
-            free(result);
+            AFKTimer = 0;
         }
-
     }while(running_start_menu);
 }
 
@@ -64,11 +55,20 @@ void displayStartMenu(char* title){
     // output banner (see fish.h for details)
     displayColour("white", "black"); // white text on black background
     displayClear(); // clear JavaFX display.
+
     displayText(0,0, title, 2);
+    //displayNextFeedTime
+    //displayNumberOfFeedsSinceAuto
+    //displayOperatingMode
 }
 
 
-void displayClockTime(int second){
+void displayNextFeedTime() {
+
+}
+
+
+void displayClockTime(){
     // display graphic lines around time
     displayColour("white", "black");
     displayLine(0, SCREEN_HEIGHT - 1, SCREEN_WIDTH, SCREEN_HEIGHT - 1);
@@ -76,28 +76,16 @@ void displayClockTime(int second){
 
     // display the time value
     char time[LINE_SIZE];
-    snprintf(time, LINE_SIZE, "%02i-%02i-%02i", clockHour(), clockMinute(), second);
+    snprintf(time, LINE_SIZE, "%02i-%02i-%02i", clockHour(), clockMinute(), clockSecond());
     displayText(SCREEN_WIDTH/2-4*CHAR_WIDTH, SCREEN_HEIGHT-CHAR_HEIGHT*1.5, time, 1);
 }
 
 
-void displayUpdatedTime(){
-    // Display time/date when seconds have changed
+int isTimeUpdated(int* prev_second) {
     int second = clockSecond();
-    if (second != prev_sec) {
-        prev_sec = second;
-        displayClockTime(second);
 
-        // Increment away from keyboard timer
-        AFKTimer++;
-    }
-}
-
-
-int isUserAFK(char* result){
-    if (AFKTimer > 60){
-        blankDisplay(result);
-        AFKTimer = 0;
+    if (second != *prev_second) {
+        *prev_second = second;
         return 1;
     }
 
@@ -105,10 +93,24 @@ int isUserAFK(char* result){
 }
 
 
+int isUserAFK(int* AFKTimer){
+    *AFKTimer += 1;
+    printf("AFK Timer: %d\n", *AFKTimer);
+
+    if (*AFKTimer >= 10) {
+        blankDisplay();
+        *AFKTimer = 0;
+        return 1;
+    }
+
+    return 0;
+}
 
 
 void runningMainMenu(){
     int running_main_menu= 1;
+    int AFKTimer = 0;
+    int prev_second = clockSecond();
     int currentOption = 0;
 
     displayMainMenu();
@@ -120,22 +122,25 @@ void runningMainMenu(){
         msleep(500L);
         char *result = buttonState(); // get the button state from the JavaFX application
 
-        // Blanks the display after 1 minute of the button no being pressed
-        if(isUserAFK(result)){
-            displayMainMenu();
-        }
-
-        else if (isLongPressed(result)) {
+        if (isLongPressed(result)) {
             running_main_menu = runMainMenuOption(currentOption,result);
+            AFKTimer = 0;
             currentOption = 0;
-            displayMainMenu();
             free(result);
         }
 
         // check the result and quit this look if the button is short pressed
         else if (isShortPressed(result)) {
             // logAdd(GENERAL, "navigate main menu");
+            AFKTimer = 0;
             currentOption = navigateMainMenu(currentOption);
+        }
+
+        else if(isTimeUpdated(&prev_second)){
+            if(isUserAFK(&AFKTimer)) {
+                displayMainMenu();
+                currentOption = 0;
+            }
         }
 
     }while(running_main_menu);
@@ -156,22 +161,28 @@ void displayMainMenu(){
 }
 
 int runMainMenuOption(int currentOption, char* result){
-    switch (currentOption){
-    case 0:
-        runningFeederMenu(result);
+    switch (currentOption) {
+        case 0:
+            runningFeederMenu(result);
+            displayMainMenu();
         break;
 
-    case 1:
-        runningSetupTime(result);
+        case 1:
+            runningSetupTime(result);
+            displayMainMenu();
         break;
 
-    case 2:
-        printf("Running Schedule Time");
+        case 2:
+            printf("Running Schedule Time");
         break;
 
-    case 3:
-        return 0;
+        case 3:
+            return 0;
+
+        default:
+            exit(1);
     }
+
     return 1;
 }
 
@@ -235,16 +246,20 @@ void isOptionSelected(int isSelected){
 }
 
 
-void blankDisplay(char* result){
+void blankDisplay(){
     int running_blank_display = 1;
+    char* result;
+
     displayColour("white", "grey");
     displayClear();
 
     do{
         msleep(500L);
         result = buttonState();
+
         if (isShortPressed(result) || isLongPressed(result)){
             running_blank_display = 0;
         }
+
     }while(running_blank_display);
 }

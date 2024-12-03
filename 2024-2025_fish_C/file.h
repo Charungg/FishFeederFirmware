@@ -1,7 +1,11 @@
+#ifndef FILE_H
+#define FILE_H
+#include "timeStruct.h"
 
-void saveSystemDateTime();
+void saveSystemDateTime(systemDateTime time);
 void loadSystemDateTime();
 void readSystemDateTime(char* lineText);
-void splitDateTimeString(char* timeString, char* delimiter, int* dateTimeArray, int* currentFreeIndex);
+void splitDateTimeString(char* timeString, const char* delimiter, int* dateTimeArray, int* currentFreeIndex);
 void removeZerosPadding(char* value);
-void loadClock(int* dateTimeArray);
+void loadClock(const int* dateTimeArray);
+#endif // FILE_H

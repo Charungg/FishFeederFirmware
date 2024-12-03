@@ -20,14 +20,15 @@ add_executable(2024_2025_fish_C main.c
         time.c
         fish.c
         file.c
-        scheduleTime.c
         menu.h
         file.h
         time.h
         userControl.h
         userControl.c
         feeder.h
-        scheduleTime.h
+        timeStruct.h
+        setUpTime.c
+        setUpTime.h
 )
 
 target_link_libraries(2024_2025_fish_C)

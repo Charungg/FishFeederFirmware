@@ -8,4 +8,19 @@ I kept running into a problem where I displayClear() the screen and it will fill
 Turns out when clearing the screen it will make the background colour of what displayColour() background colour is.
 
 After creating the start, main and feeder menus I decided to go towards set up the time of
+I decided to store my date and time inside of a struct to have easier and faster access to them.
+I've decided to create two c files one will be called time.c and the other is called setUpTime.c, the reason why I have two c files
+involving so when it comes to create a setUpScheduleTime.c it will include all the functions from time.c which will contain functions both for setUpTime.c
+and setUpScheduleTime.c.
+time.c will contains functions to increment hour, minute and hour when user shortPress on the selected time.
+Also has a function which returns a struct which contains all system date and time and functions to display similar GUI for setUpTime.c and setUpSchedule.c
 
+After which I wanted the system current date and time to be saved on a text file so I created a file.c and file.h.
+With the purpose of writing to a systemTime file if the file doesn't exist or to save new system time.
+Whereas for new feeder schedule time it will be appended to a feederSchedule file but deleting a feeder schedule time will result in
+over-writing to the feederSchedule without the unwanted feeder schedule.
+Upon testing for my first implementation for saving system date and time to the systemTime file I got error of multiple "unknown data types"
+where my time.h contained the systemDateTime struct but other files such as menu.c, file.c and setUpTime.c cannot recolonise SystemDateTime struct even though
+each c file has a include time.h meaning they should have access to the struct however I think this problem arrived from the the order where menu.c and file.c
+trying to find the struct from each other. I'm not too sure of what the actually problem is but I fixed this issue by having a separate header file just
+containing the struct and have it included to the needed c files.

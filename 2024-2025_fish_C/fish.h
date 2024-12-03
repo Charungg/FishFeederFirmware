@@ -13,6 +13,9 @@
  */
 
 // display functions for the 128x64 OLED display
+#ifndef FISH_H
+#define FISH_H
+
 void displayClear();
 void displayColour(char* fg, char* bg); // set foreground and background colour. Only "BLACK","WHITE",""
 void displayText(int x, int y, char* text, int size); // pixel coordinates; size can be 1 or 2 only
@@ -87,19 +90,4 @@ void logAddInfo(int level);
 void logRemoveInfo(int level);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif // FISH_H

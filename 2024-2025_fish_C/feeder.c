@@ -15,10 +15,19 @@
 
 #define LINE_SIZE 80
 
+int nextFeedTime;
+int numberOfFeeds;
+
+// A = Auto
+// P = Paused
+// S = Skip Next Feed
+char operatingMode;
+
 void runningFeederMenu(char *result){
     int running_feeder_menu = 1; // continue flag
-    int prev_sec = 0; // allow detection when seconds value has changed
 
+    int AFKTimer = 0;
+    int prev_second = clockSecond();
     int currentOption = 0;
 
     displayFeederMenu();
@@ -30,23 +39,27 @@ void runningFeederMenu(char *result){
         msleep(500L);
         result = buttonState(); // get the button state from the JavaFX application
 
-        // Update time on display
-        displayUpdatedTime();
 
         // Blanks the display after 1 minute of the button no being pressed
-        if(isUserAFK(result)){
-            displayFeederMenu();
+        if(isTimeUpdated(&prev_second)){
+            if(isUserAFK(&AFKTimer)) {
+                displayFeederMenu();
+                currentOption = 0;
+            }
+            displayClockTime();
         }
 
-        else if (isLongPressed(result)) {
+
+         if (isLongPressed(result)) {
             running_feeder_menu = runFeederMenuOption(currentOption);
             free(result);
         }
 
         // check the result and quit this look if the button is short pressed
-        else if (isShortPressed(result)) {
+        if (isShortPressed(result)) {
             logAdd(GENERAL, "feed menu");
             currentOption = navigateFeederMenu(currentOption);
+            AFKTimer = 0;
         }
 
     }while(running_feeder_menu);
@@ -66,6 +79,8 @@ void displayFeederMenu(){
     displayText(0, CHAR_HEIGHT*3, "Pause", 1);
 
     displayExit(0,5);
+
+    displayClockTime(clockSecond());
 }
 
 
@@ -73,7 +88,8 @@ int runFeederMenuOption(int currentOption){
 
     switch(currentOption){
         case 0:
-            printf("Feed Now Running\n");
+            feedNow();
+            displayFeederMenu();
             break;
 
         case 1:
@@ -100,33 +116,18 @@ int runFeederMenuOption(int currentOption){
 }
 
 
-void manualFeeder(char* result)
-{
-    int waiting_feed_menu = 1; // continue flag
-    do{
+void feedNow(){
+    printf("Short press to stop manual feeder\n");
 
-        msleep(500L);
+    // step the motor through a complete rotation (360 degrees)
+    for (int i = 0; i < 360; i++) {
+        motorStep(); // step the motor in the JavaFX application
+        msleep(30L); // can't go too fast, pause some milliseconds
 
-        free(result);
-        result = buttonState(); // get the button state from the JavaFX application
-
-        if (isShortPressed(result)){
-            waiting_feed_menu = 0;
-        }
-
-        if (isLongPressed(result)){
-            // step the motor through a complete rotation (360 degrees)
-            for (int i = 0; i < 180; i++) {
-                motorStep(); // step the motor in the JavaFX application
-                msleep(40L); // can't go too fast, pause some milliseconds
-
-                char* result1 = buttonState(); // get the button state from the JavaFX application
-                if (strcmp(result1, "SHORT_PRESS") == 0) i = 360;
-                free(result1);
-            }
-        }
-
-    }while(waiting_feed_menu);
+        char* result1 = buttonState(); // get the button state from the JavaFX application
+        if (strcmp(result1, "SHORT_PRESS") == 0) i = 360;
+        free(result1);
+    }
 }
 
 
