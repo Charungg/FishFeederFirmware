@@ -1,0 +1,18 @@
+Adding Time
+Time E 	Schedule E      Write Time Append Schedule W/O
+Time NE Schedule E		Write Time Append Schedule W/O
+Time E 	Schedule NE		Write Time
+Time NE Schedule NE		Write Time
+
+Adding Schedule
+Time E 	Schedule E      Append Schedule W/O
+Time NE Schedule E		Append Schedule W/O
+Time E 	Schedule NE		Write Time Append Schedule W
+Time NE Schedule NE		Append Schedule W
+
+3 Functions needed:
+Write Time
+Write Schedule
+Append Schedule
+
+
